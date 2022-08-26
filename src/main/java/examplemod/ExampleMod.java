@@ -16,11 +16,15 @@ public class ExampleMod {
     public void init() {
         System.out.println("Hello world from my example mod!");
 
+        // Register our biomes
+        BiomeRegistry.registerBiome("examplebiome", new ExampleBiome(), 1000, "forest");
+
         // Register our tiles
         TileRegistry.registerTile("exampletile", new ExampleTile(), 1, true);
 
-        // Register out objects
+        // Register our objects
         ObjectRegistry.registerObject("exampleobject", new ExampleObject(), 2, true);
+        ObjectRegistry.registerObject("examplesummoningobject", new ExampleSummoningObject(), 2, true);
 
         // Register our items
         ItemRegistry.registerItem("exampleitem", new ExampleMaterialItem(), 10, true);
@@ -29,6 +33,8 @@ public class ExampleMod {
 
         // Register our mob
         MobRegistry.registerMob("examplemob", ExampleMob.class, true);
+        MobRegistry.registerMob("examplefriendlymob", ExampleFriendlyMob.class, false);
+        MobRegistry.registerMob("examplecrittermob", ExampleCritterMob.class, false);
 
         // Register our projectile
         ProjectileRegistry.registerProjectile("exampleprojectile", ExampleProjectile.class, "exampleprojectile", "exampleprojectile_shadow");
@@ -40,6 +46,9 @@ public class ExampleMod {
     }
 
     public void initResources() {
+        ExampleCritterMob.bodyTexture = GameTexture.fromFile("mobs/examplecrittermobbody");
+        ExampleCritterMob.shadowTexture = GameTexture.fromFile("mobs/examplecrittermobshadow");
+        ExampleFriendlyMob.texture = GameTexture.fromFile("mobs/examplefriendlymob");
         ExampleMob.texture = GameTexture.fromFile("mobs/examplemob");
     }
 
@@ -79,6 +88,8 @@ public class ExampleMod {
         // Spawn tables use a ticket/weight system. In general, common mobs have about 100 tickets.
         Biome.defaultCaveMobs
                 .add(100, "examplemob");
+
+        Biome.defaultSurfaceCritters.add(100, "examplecrittermob");
 
         // Register our server chat command
         CommandsManager.registerServerCommand(new ExampleChatCommand());
